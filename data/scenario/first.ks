@@ -235,6 +235,7 @@ _　さようなら、最後の研究者。彼女からもらったお茶を飲�
 [cm]
 [fadeoutbgm time="3000"]
 [freeimage layer="base" time="3000"]
+[free_filter]
 [movie storage="ED.mp4"]
 [iscript]
 sf.clear = true;
