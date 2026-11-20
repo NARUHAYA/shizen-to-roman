@@ -204,7 +204,7 @@ _　そして最後に彼女は僕に微笑みながら振り返って、言っ�
 「そろそろ行くよ。この研究の最後の仕事だ」[l][r]
 [cm]
 ;[stopbgm]
-[movie storage="last.mp4" mute=true]
+[movie storage="last.mp4" mute=false]
 [bg storage="balcony.jpg" time="3000"]
 [fadeinbgm storage="balcony.mp3" loop=true time="3000"]
 _　彼女は火照った街を見下ろした。夏影が青く、白衣の背を染めていた。[l][r]
