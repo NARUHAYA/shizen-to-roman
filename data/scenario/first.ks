@@ -204,69 +204,7 @@ _　そして最後に彼女は僕に微笑みながら振り返って、言っ�
 「そろそろ行くよ。この研究の最後の仕事だ」[l][r]
 [cm]
 ;[stopbgm]
-;[movie storage="last.mp4"]
-
-[iscript]
-(function () {
-    const video = document.createElement("video");
-
-    video.src = "./data/video/opening.mp4";
-    video.playsInline = true;
-    video.setAttribute("playsinline", "");
-    video.setAttribute("webkit-playsinline", "");
-    video.controls = true;
-    video.muted = false;
-    video.preload = "auto";
-
-    video.style.position = "fixed";
-    video.style.inset = "0";
-    video.style.width = "100%";
-    video.style.height = "100%";
-    video.style.objectFit = "contain";
-    video.style.background = "black";
-    video.style.zIndex = "99999";
-
-    document.body.appendChild(video);
-
-    const playButton = document.createElement("button");
-    playButton.textContent = "動画を再生";
-    playButton.style.position = "fixed";
-    playButton.style.left = "50%";
-    playButton.style.top = "50%";
-    playButton.style.transform = "translate(-50%, -50%)";
-    playButton.style.zIndex = "100000";
-    playButton.style.padding = "16px 28px";
-
-    document.body.appendChild(playButton);
-
-    function cleanup() {
-        video.remove();
-        playButton.remove();
-    }
-
-    video.addEventListener("ended", cleanup);
-
-    video.addEventListener("error", function () {
-        alert("動画エラー: " + (video.error?.code || "不明"));
-    });
-
-    function attemptPlay() {
-        const result = video.play();
-        if (result && result.then) {
-            result.then(function () {
-                playButton.style.display = "none";
-            }).catch(function (error) {
-                console.warn("動画再生失敗:", error);
-                playButton.style.display = "block";
-            });
-        }
-    }
-
-    playButton.addEventListener("click", attemptPlay);
-    attemptPlay();
-})();
-[endscript]
-
+[movie storage="last.mp4" mute=true]
 [bg storage="balcony.jpg" time="3000"]
 [fadeinbgm storage="balcony.mp3" loop=true time="3000"]
 _　彼女は火照った街を見下ろした。夏影が青く、白衣の背を染めていた。[l][r]
