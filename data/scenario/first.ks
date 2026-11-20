@@ -233,7 +233,8 @@ _　僕はカメラをバッグに仕舞って、エレベーターのボタン�
 _　さようなら、最後の研究者。彼女からもらったお茶を飲んでいると、エレベーターの扉が開いた。[l][r]
 
 [cm]
-[fadeoutbgm time="3000"]
+;[fadeoutbgm time="3000"]
+[stopbgm]
 [freeimage layer="base" time="3000"]
 [free_filter]
 [movie storage="ED.mp4"]
