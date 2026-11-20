@@ -202,11 +202,77 @@ _　彼女はドアノブを回す。[l][r]
 「そんな」[l][r]
 _　そして最後に彼女は僕に微笑みながら振り返って、言った。[l][r]
 「そろそろ行くよ。この研究の最後の仕事だ」[l][r]
-[cm]
+;[cm]
 ;[stopbgm]
-[movie storage="last.mp4" mute=false]
+;[movie storage="last.mp4" mute=false]
+;[bg storage="balcony.jpg" time="3000"]
+;[fadeinbgm storage="balcony.mp3" loop=true time="3000"]
+
+; 動画再生
+[cm]
+
+[iscript]
+(function () {
+    const video = document.createElement("video");
+    const button = document.createElement("button");
+    let finished = false;
+
+    video.src = "./data/video/last.mp4";
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    video.muted = false;
+    video.controls = false;
+    video.preload = "auto";
+
+    video.style.cssText =
+        "position:fixed;inset:0;width:100%;height:100%;" +
+        "object-fit:contain;background:black;z-index:99999;";
+
+    button.textContent = "動画を再生";
+    button.style.cssText =
+        "position:fixed;left:50%;top:50%;" +
+        "transform:translate(-50%,-50%);" +
+        "z-index:100000;padding:16px 28px;display:none;";
+
+    document.body.appendChild(video);
+    document.body.appendChild(button);
+
+    function finish() {
+        if (finished) return;
+        finished = true;
+
+        video.pause();
+        video.remove();
+        button.remove();
+
+        // 動画終了後にシナリオを進める
+        TYRANO.kag.ftag.nextOrder();
+    }
+
+    video.addEventListener("ended", finish);
+
+    function play() {
+        video.play().then(function () {
+            button.style.display = "none";
+        }).catch(function (error) {
+            console.warn("動画再生失敗:", error);
+            button.style.display = "block";
+        });
+    }
+
+    button.addEventListener("click", play);
+    play();
+})();
+[endscript]
+
+; 動画終了までシナリオを停止
+[s]
+
+; 動画終了後の処理
 [bg storage="balcony.jpg" time="3000"]
 [fadeinbgm storage="balcony.mp3" loop=true time="3000"]
+
 _　彼女は火照った街を見下ろした。夏影が青く、白衣の背を染めていた。[l][r]
 _　欄干に登ってから彼女は、白衣のポケットからスイッチを取り出して押す。するとこの白衣が地につくことは二度とない、と彼女は言った。[l][r]
 _　緑をたくさん吸い込んだ心地よい風が頬を撫でた。彼女の淡く光る白衣が翼みたいに大きく揺れている。[l][r]
