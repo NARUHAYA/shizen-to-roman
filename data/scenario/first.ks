@@ -321,12 +321,106 @@ _　ボケボケの写真は、写真とも言えないような写真だった�
 _　僕はカメラをバッグに仕舞って、エレベーターのボタンを押す。[l][r]
 _　さようなら、最後の研究者。彼女からもらったお茶を飲んでいると、エレベーターの扉が開いた。[l][r]
 
+;[cm]
+;[fadeoutbgm time="3000"]
+;[freeimage layer="base" time="3000"]
+;[free_filter]
+;[movie storage="ED.mp4"]
+;[iscript]
+;sf.clear = true;
+;[endscript]
+;[jump storage="title.ks" target="*title"]
+
 [cm]
+
+; BGMと画面をフェードアウト
 [fadeoutbgm time="3000"]
 [freeimage layer="base" time="3000"]
 [free_filter]
-[movie storage="ED.mp4"]
+
+; ED動画再生
+[iscript]
+(function () {
+    const video = document.createElement("video");
+    const button = document.createElement("button");
+    let finished = false;
+
+    video.src = "./data/video/ED.mp4";
+    video.playsInline = true;
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    video.muted = false;
+    video.controls = false;
+    video.preload = "auto";
+
+    video.style.cssText =
+        "position:fixed;inset:0;width:100%;height:100%;" +
+        "object-fit:contain;background:black;z-index:99999;";
+
+    button.textContent = "EDを再生";
+    button.style.cssText =
+        "position:fixed;left:50%;top:50%;" +
+        "transform:translate(-50%,-50%);" +
+        "z-index:100000;padding:16px 28px;display:none;";
+
+    document.body.appendChild(video);
+    document.body.appendChild(button);
+
+    function cleanup() {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+        video.remove();
+        button.remove();
+    }
+
+    function finish() {
+        if (finished) return;
+        finished = true;
+
+        cleanup();
+
+        TYRANO.kag.ftag.startTag("jump", {
+            target: "*after_ed"
+        });
+    }
+
+    video.addEventListener("ended", finish);
+
+    video.addEventListener("error", function () {
+        console.error("ED動画エラー:", video.error);
+        button.textContent = "EDを再試行";
+        button.style.display = "block";
+    });
+
+    function play() {
+        const result = video.play();
+
+        if (result && typeof result.then === "function") {
+            result.then(function () {
+                button.style.display = "none";
+            }).catch(function (error) {
+                console.warn("ED再生失敗:", error);
+                button.style.display = "block";
+            });
+        }
+    }
+
+    button.addEventListener("click", play);
+    play();
+})();
+[endscript]
+
+; ED終了まで待機
+[s]
+
+*after_ed
+
+; クリアフラグを保存
 [iscript]
 sf.clear = true;
 [endscript]
+
+; タイトル画面に戻る
 [jump storage="title.ks" target="*title"]
+
