@@ -2,7 +2,7 @@
 
 [hidemenubutton]
 @layopt layer=message0 visible=false
-[fadeinbgm storage="balcony.mp3" time="3000" ]
+;[fadeinbgm storage="balcony.mp3" time="3000" ]
 ;背景画像を設定
 [if exp="sf.clear==undefined"]
 [image layer="base" storage="balcony.jpg"]
