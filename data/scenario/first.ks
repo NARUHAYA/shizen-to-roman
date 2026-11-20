@@ -208,7 +208,8 @@ _　そして最後に彼女は僕に微笑みながら振り返って、言っ�
 ;[bg storage="balcony.jpg" time="3000"]
 ;[fadeinbgm storage="balcony.mp3" loop=true time="3000"]
 
-; 動画再生
+
+; 動画再生開始
 [cm]
 
 [iscript]
@@ -238,27 +239,44 @@ _　そして最後に彼女は僕に微笑みながら振り返って、言っ�
     document.body.appendChild(video);
     document.body.appendChild(button);
 
+    function cleanup() {
+        video.pause();
+        video.removeAttribute("src");
+        video.load();
+        video.remove();
+        button.remove();
+    }
+
     function finish() {
         if (finished) return;
         finished = true;
 
-        video.pause();
-        video.remove();
-        button.remove();
+        cleanup();
 
-        // 動画終了後にシナリオを進める
-        TYRANO.kag.ftag.nextOrder();
+        TYRANO.kag.ftag.startTag("jump", {
+            target: "*after_movie"
+        });
     }
 
     video.addEventListener("ended", finish);
 
+    video.addEventListener("error", function () {
+        console.error("動画エラー:", video.error);
+        button.textContent = "動画を再試行";
+        button.style.display = "block";
+    });
+
     function play() {
-        video.play().then(function () {
-            button.style.display = "none";
-        }).catch(function (error) {
-            console.warn("動画再生失敗:", error);
-            button.style.display = "block";
-        });
+        const result = video.play();
+
+        if (result && typeof result.then === "function") {
+            result.then(function () {
+                button.style.display = "none";
+            }).catch(function (error) {
+                console.warn("動画再生失敗:", error);
+                button.style.display = "block";
+            });
+        }
     }
 
     button.addEventListener("click", play);
@@ -266,12 +284,16 @@ _　そして最後に彼女は僕に微笑みながら振り返って、言っ�
 })();
 [endscript]
 
-; 動画終了までシナリオを停止
+; 動画終了まで待機
 [s]
 
-; 動画終了後の処理
+*after_movie
+[cm]
 [bg storage="balcony.jpg" time="3000"]
 [fadeinbgm storage="balcony.mp3" loop=true time="3000"]
+
+; ここから元のシナリオの続き
+
 
 _　彼女は火照った街を見下ろした。夏影が青く、白衣の背を染めていた。[l][r]
 _　欄干に登ってから彼女は、白衣のポケットからスイッチを取り出して押す。するとこの白衣が地につくことは二度とない、と彼女は言った。[l][r]
